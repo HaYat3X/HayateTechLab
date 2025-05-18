@@ -1,6 +1,7 @@
 // import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
+// import { ThemeProvider } from './provider/ThemeContext';
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import ArticlesPage from './pages/ArticlesPage';
