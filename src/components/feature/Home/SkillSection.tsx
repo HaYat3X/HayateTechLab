@@ -1,7 +1,12 @@
 // =============================================================================
 // インポート（ライブラリ）
 // =============================================================================
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
+
+// =============================================================================
+// インポート（自作ライブラリ）
+// =============================================================================
+import { useScrollAnimation } from '../../../hooks/useScrollAnimation';
 
 const SkillSection: React.FC = () => {
   // =============================================================================
@@ -78,36 +83,8 @@ const SkillSection: React.FC = () => {
    */
   const sectionsRef = useRef<(HTMLElement | null)[]>([]);
 
-  // =============================================================================
-  // ライフサイクルフック
-  // =============================================================================
-  /**
-   * IntersectionObserver を使ってセクション要素が表示領域に入ったときに
-   * 'animate-slide-in' クラスを付与する。
-   *
-   * - 表示されたセクションにアニメーションを適用する
-   * - スクロール時に要素がフェードインまたはスライドインする視覚効果を実現
-   *
-   * @effect セクションごとに IntersectionObserver を設定・監視し、コンポーネントのアンマウント時に監視を解除する
-   */
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('animate-slide-in');
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    sectionsRef.current.forEach((section) => {
-      if (section) observer.observe(section);
-    });
-
-    return () => observer.disconnect();
-  }, []);
+  // アニメーションを適用するためのカスタムフック
+  useScrollAnimation(sectionsRef.current);
 
   // =============================================================================
   // テンプレート
