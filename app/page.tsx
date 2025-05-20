@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Code2, Brain, Rocket, Database } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
   const techStacks = {
@@ -31,9 +32,35 @@ export default function Home() {
     ]
   };
 
+
+
   return (
-    <div>
-      <section className="py-20">
+    <div className="space-y-16">
+
+      <section
+        className="relative py-20 overflow-hidden"
+      >
+        <div className="absolute inset-0 bg-gradient-to-br -z-10" />
+        <div className="absolute inset-0 bg-grid-pattern opacity-[0.05] animate-fade-in" />
+        <div className="text-center relative">
+          <h1 className="text-6xl font-bold gradient-text animate-slide-in animate-delay-200">
+            HayateTechLab<span className="text-gray-900 dark:text-white">で技術を探求する</span>
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto my-8 leading-relaxed animate-slide-in animate-delay-200">
+            HayateTechLab は、個人エンジニアによる技術検証と知見の記録を目的とした開発ラボです。<br />
+            主にフロントエンド、バックエンド、AI、ビジネスなどの分野を中心に、実践ベースの情報を発信しています。
+          </p>
+          <Link
+            href="/articles"
+            className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-full transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-slide-in animate-delay-300"
+          >
+            記事を読む <ArrowRight size={20} className="ml-2" />
+          </Link>
+        </div>
+      </section>
+
+
+      {/* <section className="py-20">
         <div className="max-w-5xl mx-auto px-4 space-y-8 text-center">
           <h1 className="text-6xl font-bold gradient-text">
             HayateTechLab
@@ -52,7 +79,7 @@ export default function Home() {
             </Button>
           </div>
         </div>
-      </section>
+      </section> */}
 
       <section className="skewed-section py-32 my-20">
         <div className="max-w-5xl mx-auto px-4 text-center text-white space-y-4">
@@ -100,7 +127,7 @@ export default function Home() {
       <section className="py-16 max-w-6xl mx-auto px-4">
         <div className="space-y-16">
           <h2 className="text-3xl font-bold text-center gradient-text">技術スキル</h2>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="space-y-6">
               <div className="flex items-center gap-3 p-4 bg-card/50 rounded-xl backdrop-blur-sm">

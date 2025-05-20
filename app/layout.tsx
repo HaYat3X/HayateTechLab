@@ -28,12 +28,21 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="min-h-screen flex flex-col">
+          {/* <div className="min-h-screen flex flex-col">
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />
             <ChatBot />
             <Toaster />
+          </div> */}
+          <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-200">
+            <Header />
+            <main className="flex-grow container mx-auto px-4 py-8 sm:px-6 lg:px-8">
+              {children}
+            </main>
+            <ChatBot />
+            <Toaster />
+            <Footer />
           </div>
         </ThemeProvider>
       </body>
