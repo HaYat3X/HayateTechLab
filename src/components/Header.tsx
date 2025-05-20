@@ -26,7 +26,7 @@ const Header: React.FC = () => {
   const navLinks = [
     { name: 'ホーム', path: '/' },
     { name: '記事一覧', path: '/articles' },
-    { name: 'お問い合わせ', path: '/contact' },
+    // { name: 'お問い合わせ', path: '/contact' },
   ];
 
   return (
@@ -34,7 +34,7 @@ const Header: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center">
-            <span className="font-bold text-xl text-indigo-600 dark:text-indigo-400">NotePress</span>
+            <span className="font-bold text-xl text-indigo-600 dark:text-indigo-400">HayateTechLab</span>
           </Link>
 
           <nav className="hidden md:flex space-x-8">
@@ -62,7 +62,7 @@ const Header: React.FC = () => {
               {theme === 'dark' ? (
                 <Sun size={20} className="text-yellow-400" />
               ) : (
-                <Moon size={20} className="text-gray-600" />
+                <Moon size={20} className="text-purple-600" />
               )}
             </button>
 

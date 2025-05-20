@@ -38,7 +38,7 @@ const HelloSection: React.FC = () => {
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed animate-slide-in animate-delay-200">
           HayateTechLab は、個人エンジニアによる技術検証と知見の記録を目的とした開発ラボです。<br />
-          主にフロントエンド、AI、ツール開発などの分野を中心に、実践ベースの情報を発信しています。
+          主にフロントエンド、バックエンド、AI、ビジネスなどの分野を中心に、実践ベースの情報を発信しています。
         </p>
         <Link
           to="/articles"
