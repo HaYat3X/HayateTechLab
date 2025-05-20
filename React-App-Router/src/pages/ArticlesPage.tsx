@@ -3,27 +3,58 @@ import { Link, useLocation } from 'react-router-dom';
 import { Search, Filter, Clock, Tag } from 'lucide-react';
 import { mockArticles } from '../data/mockData';
 
-interface Category {
-  id: string;
-  name: string;
-}
+// interface Category {
+//   id: string;
+//   name: string;
+// }
 
-const categories: Category[] = [
-  { id: 'all', name: '全て' },
-  { id: 'programming', name: 'プログラミング' },
-  { id: 'design', name: 'デザイン' },
-  { id: 'technology', name: 'テクノロジー' },
-  { id: 'career', name: 'キャリア' },
-];
+// const categories: Category[] = [
+//   { id: 'all', name: '全て' },
+//   { id: 'programming', name: 'プログラミング' },
+//   { id: 'design', name: 'デザイン' },
+//   { id: 'technology', name: 'テクノロジー' },
+//   { id: 'career', name: 'キャリア' },
+// ];
+
+const NOTION_API_KEY = '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';
+const DATABASE_ID = '1d4fab19d29580a2bc13d8f559d5fa7a';
+
+
+const fetchNotionData = async () => {
+  try {
+    const response = await fetch(`https://api.notion.com/v1/databases/${DATABASE_ID}/query`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${NOTION_API_KEY}`,
+        'Content-Type': 'application/json',
+        'Notion-Version': '2022-06-28',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('✅ Notionから取得したデータ:', data);
+  } catch (error) {
+    console.error('❌ Notionデータの取得に失敗:', error);
+  }
+};
 
 const ArticlesPage: React.FC = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const initialCategory = queryParams.get('category') || 'all';
-  
+
   const [activeCategory, setActiveCategory] = useState<string>(initialCategory);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [filteredArticles, setFilteredArticles] = useState(mockArticles);
+
+  // 検証
+  useEffect(() => {
+    fetchNotionData();
+  }, []);
 
   // URLクエリパラメータが変更されたときにカテゴリーを更新
   useEffect(() => {
@@ -34,22 +65,22 @@ const ArticlesPage: React.FC = () => {
   // 検索とフィルタリングを適用
   useEffect(() => {
     let result = mockArticles;
-    
+
     // カテゴリーでフィルタリング
     if (activeCategory !== 'all') {
       result = result.filter(article => article.category === activeCategory);
     }
-    
+
     // 検索語でフィルタリング
     if (searchTerm) {
       const lowercasedTerm = searchTerm.toLowerCase();
       result = result.filter(
-        article => 
-          article.title.toLowerCase().includes(lowercasedTerm) || 
+        article =>
+          article.title.toLowerCase().includes(lowercasedTerm) ||
           article.excerpt.toLowerCase().includes(lowercasedTerm)
       );
     }
-    
+
     setFilteredArticles(result);
   }, [activeCategory, searchTerm]);
 
@@ -66,7 +97,7 @@ const ArticlesPage: React.FC = () => {
   return (
     <div className="space-y-8">
       <h1 className="text-3xl font-bold text-gray-900 dark:text-white">記事一覧</h1>
-      
+
       {/* 検索バーとフィルター */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-grow">
@@ -81,8 +112,8 @@ const ArticlesPage: React.FC = () => {
             className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white"
           />
         </div>
-        
-        <div className="relative sm:max-w-xs">
+
+        {/* <div className="relative sm:max-w-xs">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <Filter size={18} className="text-gray-400" />
           </div>
@@ -97,32 +128,31 @@ const ArticlesPage: React.FC = () => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
       </div>
-      
+
       {/* カテゴリータブ（大画面用） */}
-      <div className="hidden sm:flex space-x-2 overflow-x-auto pb-2">
+      {/* <div className="hidden sm:flex space-x-2 overflow-x-auto pb-2">
         {categories.map((category) => (
           <button
             key={category.id}
             onClick={() => setActiveCategory(category.id)}
-            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-              activeCategory === category.id
+            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${activeCategory === category.id
                 ? 'bg-indigo-600 text-white'
                 : 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600'
-            }`}
+              }`}
           >
             {category.name}
           </button>
         ))}
-      </div>
-      
+      </div> */}
+
       {/* 記事リスト */}
       {filteredArticles.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredArticles.map((article) => (
-            <Link 
-              key={article.id} 
+            <Link
+              key={article.id}
               to={`/articles/${article.id}`}
               className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-200"
             >
@@ -132,7 +162,7 @@ const ArticlesPage: React.FC = () => {
                 className="w-full h-48 object-cover"
               />
               <div className="p-5">
-                <div className="flex items-center space-x-2 mb-2">
+                {/* <div className="flex items-center space-x-2 mb-2">
                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                     article.category === 'programming' ? 'bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200' :
                     article.category === 'design' ? 'bg-purple-100 dark:bg-purple-900 text-purple-800 dark:text-purple-200' :
@@ -143,7 +173,7 @@ const ArticlesPage: React.FC = () => {
                      article.category === 'design' ? 'デザイン' :
                      article.category === 'technology' ? 'テクノロジー' : 'キャリア'}
                   </span>
-                </div>
+                </div> */}
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   {article.title}
                 </h2>
