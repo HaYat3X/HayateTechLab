@@ -31,10 +31,10 @@ export function Header() {
               トップ
             </Link>
             <Link
-              href="/blog"
+              href="/articles"
               className="text-sm font-medium hover:text-primary transition-colors"
             >
-              ブログ
+              記事
             </Link>
             <Link
               href="/contact"

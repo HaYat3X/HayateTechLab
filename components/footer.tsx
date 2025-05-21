@@ -48,7 +48,7 @@ export function Footer() {
               </li>
               <li className="mb-2">
                 <Link href="/articles" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                  記事一覧
+                  記事
                 </Link>
               </li>
             </ul>
