@@ -36,12 +36,12 @@ export function Header() {
             >
               記事
             </Link>
-            <Link
+            {/* <Link
               href="/contact"
               className="text-sm font-medium hover:text-primary transition-colors"
             >
               お問い合わせ
-            </Link>
+            </Link> */}
             <Button
               variant="ghost"
               size="icon"
