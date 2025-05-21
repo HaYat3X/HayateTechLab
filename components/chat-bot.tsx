@@ -44,7 +44,7 @@ export function ChatBot() {
         className="fixed bottom-4 right-4 rounded-full h-12 w-12 p-0"
         onClick={() => setIsOpen(true)}
       >
-        <MessageCircle className="h-6 w-6" />
+        <MessageCircle className="h-6 w-6" color="white" />
       </Button>
 
       {isOpen && (

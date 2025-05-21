@@ -17,7 +17,15 @@ export async function GET() {
         'Content-Type': 'application/json',
         'Notion-Version': '2022-06-28',
       },
-      body: JSON.stringify({ page_size: 100 }),
+      body: JSON.stringify({
+        // page_size: 100,
+        filter: {
+          property: '公開',
+          select: {
+            equals: '公開'
+          }
+        }
+      }),
       cache: 'no-store' // ←これでNext.jsのfetchキャッシュを無効化
     });
 
@@ -28,24 +36,36 @@ export async function GET() {
 
     const data = await response.json();
 
-    console.log('✅ Notion fetch success:', data);
+
 
     // シンプルに整形して返す
     const articles = data.results.map((page: any) => {
       const properties = page.properties;
 
+      const rawDate = properties['最終更新日']?.last_edited_time || page.last_edited_time;
+      const formattedDate = new Date(rawDate).toISOString().split('T')[0]; //
+
+      const cover = page.cover;
+      const coverImage =
+        cover?.type === 'external'
+          ? cover.external.url
+          : cover?.type === 'file'
+            ? cover.file.url
+            : 'https://images.pexels.com/photos/2599244/pexels-photo-2599244.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2'; // デフォルト画像にしてもOK
+
+
       return {
         id: page.id,
         title: properties['タイトル']?.title?.[0]?.plain_text || '無題',
         excerpt: properties['記事の説明']?.rich_text?.[0]?.plain_text || '無題',
-        date: '2025-04-05',
+        date: formattedDate,
         readTime: properties['読むのにかかる時間']?.rich_text?.[0]?.plain_text || '',
         category: properties['タグ']?.multi_select?.map((tag: any) => tag.name) || [],
-        coverImage: 'https://images.pexels.com/photos/2599244/pexels-photo-2599244.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+        coverImage: coverImage,
       };
     });
 
-    return NextResponse.json({ data: articles }, { status: 200 });
+    return NextResponse.json({ articles }, { status: 200 });
   } catch (err) {
     console.error('❌ Notion fetch error:', err);
     return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

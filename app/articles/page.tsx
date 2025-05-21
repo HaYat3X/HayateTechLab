@@ -1,125 +1,55 @@
-// pages/articles/index.tsx
-"use client"
+'use client';
 
 import { useEffect, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation'; // ← こちらが正解
-
+import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, Clock, Tag, Calendar } from 'lucide-react';
-// import { mockArticles } from '@/data/mockData';
-
 
 export interface Article {
   id: string;
   title: string;
   excerpt: string;
-  date: string;
-  readTime: number;
-  category: 'programming' | 'design' | 'technology' | 'career';
-  coverImage: string;
+  date?: string;
+  readTime?: string;
+  category?: string;
+  coverImage?: string;
 }
-
-export const mockArticles: Article[] = [
-  {
-    id: '1',
-    title: 'Reactの最新機能を使いこなす',
-    excerpt: 'React 18の新機能と、それらをプロジェクトで活用するためのベストプラクティスについて解説します。',
-    date: '2025-04-15',
-    readTime: 8,
-    category: 'programming',
-    coverImage: 'https://images.pexels.com/photos/11035380/pexels-photo-11035380.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    id: '2',
-    title: 'モダンUIデザインの原則',
-    excerpt: '美しく機能的なUIを設計するための原則と、ユーザーエクスペリエンスを向上させるテクニックを紹介します。',
-    date: '2025-04-10',
-    readTime: 6,
-    category: 'design',
-    coverImage: 'https://images.pexels.com/photos/196645/pexels-photo-196645.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    id: '3',
-    title: 'AIを活用した開発効率化',
-    excerpt: '人工知能を活用して開発プロセスを効率化し、生産性を高める方法について詳しく解説します。',
-    date: '2025-04-05',
-    readTime: 7,
-    category: 'technology',
-    coverImage: 'https://images.pexels.com/photos/2599244/pexels-photo-2599244.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    id: '4',
-    title: 'テック業界でのキャリア構築',
-    excerpt: '急速に変化するテクノロジー業界で長期的なキャリアを構築するための戦略とアドバイスを提供します。',
-    date: '2025-04-01',
-    readTime: 5,
-    category: 'career',
-    coverImage: 'https://images.pexels.com/photos/3184316/pexels-photo-3184316.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    id: '5',
-    title: 'TypeScriptの高度な型システム',
-    excerpt: 'TypeScriptの高度な型システムを理解し、型安全なコードを書くためのテクニックを詳しく解説します。',
-    date: '2025-03-28',
-    readTime: 9,
-    category: 'programming',
-    coverImage: 'https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    id: '6',
-    title: 'アクセシブルなWebデザイン',
-    excerpt: '誰もが利用できるWebサイトを設計するための原則とテクニックについて詳しく解説します。',
-    date: '2025-03-22',
-    readTime: 7,
-    category: 'design',
-    coverImage: 'https://images.pexels.com/photos/1779487/pexels-photo-1779487.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    id: '7',
-    title: 'エッジコンピューティングの実用例',
-    excerpt: 'エッジコンピューティングの実際の応用例と、それがもたらす利点について詳しく解説します。',
-    date: '2025-03-18',
-    readTime: 6,
-    category: 'technology',
-    coverImage: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    id: '8',
-    title: 'リモートワークでの生産性向上',
-    excerpt: 'リモートワーク環境での生産性を最大化するための実践的なテクニックとツールを紹介します。',
-    date: '2025-03-12',
-    readTime: 5,
-    category: 'career',
-    coverImage: 'https://images.pexels.com/photos/4050315/pexels-photo-4050315.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  },
-  {
-    id: '9',
-    title: 'マイクロフロントエンドアーキテクチャ',
-    excerpt: '大規模Webアプリケーションのためのマイクロフロントエンドアーキテクチャの実装方法を解説します。',
-    date: '2025-03-08',
-    readTime: 10,
-    category: 'programming',
-    coverImage: 'https://images.pexels.com/photos/4974915/pexels-photo-4974915.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
-  }
-];
 
 const ArticlesPage = () => {
   const router = useRouter();
-  const searchParams = useSearchParams(); // ✅ URLのクエリ取得
+  const searchParams = useSearchParams();
+  const initialCategory = searchParams.get('category') || 'all';
 
-  const initialCategory = searchParams.get('category') || 'all'; // ✅ 修正ポイント
-
+  const [articles, setArticles] = useState<Article[]>([]);
+  const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredArticles, setFilteredArticles] = useState(mockArticles);
 
+  // Notion API から記事取得
   useEffect(() => {
-    const categoryParam = searchParams.get('category') || 'all';
-    setActiveCategory(categoryParam);
+    const fetchArticles = async () => {
+      try {
+        const res = await fetch('/api/articles', { cache: 'no-store' });
+        const data = await res.json();
+        console.log('✅ 記事取得成功:', data);
+
+        setArticles(data.articles || []);
+
+      } catch (err) {
+        console.error('❌ 記事取得エラー:', err);
+      }
+    };
+    fetchArticles();
+  }, []);
+
+  // クエリが変わったらカテゴリ変更
+  useEffect(() => {
+    setActiveCategory(searchParams.get('category') || 'all');
   }, [searchParams]);
 
+  // フィルターと検索
   useEffect(() => {
-    let result = mockArticles;
+    let result = articles;
 
     if (activeCategory !== 'all') {
       result = result.filter(article => article.category === activeCategory);
@@ -135,9 +65,10 @@ const ArticlesPage = () => {
     }
 
     setFilteredArticles(result);
-  }, [activeCategory, searchTerm]);
+  }, [articles, activeCategory, searchTerm]);
 
-  const formatDate = (dateString: string) => {
+  const formatDate = (dateString?: string) => {
+    if (!dateString) return '';
     const date = new Date(dateString);
     return new Intl.DateTimeFormat('ja-JP', {
       year: 'numeric',
@@ -146,11 +77,11 @@ const ArticlesPage = () => {
     }).format(date);
   };
 
-
   return (
     <div className="space-y-8">
       <h1 className="text-3xl font-bold gradient-text">記事一覧</h1>
 
+      {/* 検索バー */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-grow">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -166,30 +97,41 @@ const ArticlesPage = () => {
         </div>
       </div>
 
+      {/* 記事一覧 */}
       {filteredArticles.length > 0 ? (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredArticles.map(article => (
             <Link
               key={article.id}
               href={`/articles/${article.id}`}
-              className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow"
+              className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow group"
             >
               <div>
                 <div className="relative aspect-video">
-                  <img
-                    src={article.coverImage}
-                    alt={article.title}
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    style={{ borderRadius: '8px 8px 0 0', height: '200px', width: '100%' }} // 角丸を適用
-                  />
+                  {article.coverImage && (
+                    <img
+                      src={article.coverImage}
+                      alt={article.title}
+                      className="object-cover transition-transform duration-700"
+                      style={{
+                        borderRadius: '8px 8px 0 0',
+                        height: '200px',
+                        width: '100%'
+                      }}
+                    />
+                  )}
                   <div className="text-white absolute top-4 left-4 px-3 py-1 bg-primary/90 text-primary-foreground rounded-full text-sm backdrop-blur-sm">
-                    {article.category}
+                    {Array.isArray(article.category) ? article.category[0] : article.category}
                   </div>
                 </div>
 
                 <div className="p-5">
-                  <h2 className="text-xl font-semibold line-clamp-1" style={{ marginTop: '-20px' }}>{article.title}</h2>
-                  <p className="text-gray-600 dark:text-gray-400 mt-1 mb-4 line-clamp-2">{article.excerpt}</p>
+                  <h2 className="text-xl font-semibold line-clamp-1 mt-[-20px]">
+                    {article.title}
+                  </h2>
+                  <p className="text-gray-600 dark:text-gray-400 mt-1 mb-4 line-clamp-2">
+                    {article.excerpt}
+                  </p>
                   <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
                     <div className="flex items-center">
                       <Calendar size={14} className="mr-1" />
@@ -197,7 +139,7 @@ const ArticlesPage = () => {
                     </div>
                     <div className="flex items-center">
                       <Clock size={14} className="mr-1" />
-                      {article.readTime} 分で読める
+                      {article.readTime || '-'} 分で読める
                     </div>
                   </div>
                 </div>
@@ -226,4 +168,3 @@ const ArticlesPage = () => {
 };
 
 export default ArticlesPage;
-
