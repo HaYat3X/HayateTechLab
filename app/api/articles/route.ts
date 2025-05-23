@@ -25,8 +25,7 @@ export async function GET() {
             equals: '公開'
           }
         }
-      }),
-      cache: 'no-store' // ←これでNext.jsのfetchキャッシュを無効化
+      })
     });
 
     if (!response.ok) {
