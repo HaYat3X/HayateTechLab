@@ -108,6 +108,7 @@ const ArticlesPage = () => {
                 query: {
                   title: article.title,
                   date: article.date,
+                  category: article.category,
                   readTime: article.readTime,
                   excerpt: article.excerpt,
                   coverImage: article.coverImage
