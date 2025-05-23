@@ -29,7 +29,7 @@ const ArticlesPage = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const res = await fetch('/api/articles', { cache: 'no-store' });
+        const res = await fetch('/api/articles');
         const data = await res.json();
         console.log('✅ 記事取得成功:', data);
 
