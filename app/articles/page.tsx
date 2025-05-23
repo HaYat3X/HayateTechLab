@@ -103,7 +103,16 @@ const ArticlesPage = () => {
           {filteredArticles.map(article => (
             <Link
               key={article.id}
-              href={`/articles/${article.id}`}
+              href={{
+                pathname: `/articles/${article.id}`,
+                query: {
+                  title: article.title,
+                  date: article.date,
+                  readTime: article.readTime,
+                  excerpt: article.excerpt,
+                  coverImage: article.coverImage
+                }
+              }}
               className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow group"
             >
               <div>
