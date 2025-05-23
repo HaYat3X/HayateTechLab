@@ -9,6 +9,7 @@ import 'prismjs/themes/prism-tomorrow.css'
 // used for rendering equations (optional)
 import 'katex/dist/katex.min.css'
 
+
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
 // import { notFound } from "next/navigation";
