@@ -2,7 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/theme-provider';
-import { Header } from '@/components/header';
+import { AppHeader } from '@/components/common/AppHeader';
 import { Footer } from '@/components/footer';
 import { ChatBot } from '@/components/chat-bot';
 import { Toaster } from "@/components/ui/sonner";
@@ -36,10 +36,12 @@ export default function RootLayout({
             <Toaster />
           </div> */}
           <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-200">
-            <Header />
+            <AppHeader />
+
             <main className="flex-grow container mx-auto px-4 py-8 sm:px-6 lg:px-8">
               {children}
             </main>
+            
             <ChatBot />
             <Toaster />
             <Footer />
