@@ -1,0 +1,25 @@
+name: Trigger Vercel Rebuild Every 10 Days
+
+on:
+  schedule:
+    - cron: '0 0 */10 * *' # 10日ごと (UTC 0:00 = 日本時間 9:00)
+  workflow_dispatch:
+
+jobs:
+  trigger-vercel:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Git
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+      - name: Make dummy commit to trigger Vercel
+        run: |
+          echo "Triggered on $(date)" > .last-build-timestamp.txt
+          git add .last-build-timestamp.txt
+          git commit -m "chore: trigger Vercel build"
+          git push origin HEAD:main
