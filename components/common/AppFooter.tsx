@@ -1,26 +1,19 @@
-// export function Footer() {
-//   return (
-//     <footer className="border-t">
-//       <div className="container flex h-16 items-center justify-between">
-//         <p className="text-sm text-muted-foreground">
-//           © 2024 Modern Blog. All rights reserved.
-//         </p>
-//       </div>
-//     </footer>
-//   );
-// }
-
-
-
-import React from 'react';
-// import { Link } from 'react-router-dom';
+// =============================================================================
+// モジュール
+// =============================================================================
 import { Github, Twitter } from 'lucide-react';
 import Link from 'next/link';
 
-
-export function Footer() {
+export function AppFooter() {
+  // =============================================================================
+  // セットアップ
+  // =============================================================================
+  // 現在の年を取得
   const currentYear = new Date().getFullYear();
 
+  // =============================================================================
+  // テンプレート
+  // =============================================================================
   return (
     <footer className="bg-white dark:bg-gray-800 shadow-inner transition-colors duration-200">
       <div className="container mx-auto px-4 py-8 sm:px-6 lg:px-8">
@@ -31,8 +24,9 @@ export function Footer() {
                 HayateTechLab
               </span>
             </Link>
+
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400 max-w-md">
-              プログラミング、ビジネスに関する情報を発信するブログです。新しい技術や知見を共有します。
+              HayateTechLabは、個人エンジニアが日々の技術調査や学びをまとめるための開発ラボです。
             </p>
           </div>
 
@@ -40,12 +34,14 @@ export function Footer() {
             <h2 className="mb-4 text-sm font-semibold uppercase text-gray-900 dark:text-white">
               リンク
             </h2>
+
             <ul className="text-gray-600 dark:text-gray-400 text-sm">
               <li className="mb-2">
                 <Link href="/" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                  ホーム
+                  トップ
                 </Link>
               </li>
+
               <li className="mb-2">
                 <Link href="/articles" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
                   記事
@@ -61,21 +57,23 @@ export function Footer() {
           <span className="text-sm text-gray-600 dark:text-gray-400">
             © {currentYear} HayateTechLab. All Rights Reserved.
           </span>
+
           <div className="flex mt-4 space-x-4 sm:mt-0">
-            <a
+            <Link
               href="https://github.com/HaYat3X"
               className="text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
               aria-label="Github"
             >
               <Github size={20} />
-            </a>
-            <a
+            </Link>
+
+            <Link
               href="https://twitter.com/HaYat3X"
               className="text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
               aria-label="Twitter"
             >
               <Twitter size={20} />
-            </a>
+            </Link>
           </div>
         </div>
       </div>
