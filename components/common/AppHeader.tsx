@@ -6,6 +6,7 @@
 import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 
 // =============================================================================
 // 自作モジュール
@@ -19,6 +20,13 @@ export function AppHeader() {
   // Next.jsのテーマ管理フックを使用
   const { theme, setTheme } = useTheme();
 
+  // コンポーネントがマウントされたかどうかを判定するステート
+  const [mounted, setMounted] = useState(false);
+
+  // 初回レンダリング後（クライアントマウント時）に mounted を true に設定
+  // これにより、テーマなどクライアント側でしか扱えない状態を安全にレンダリングできるようにする
+  useEffect(() => setMounted(true), []);
+  
   // =============================================================================
   // テンプレート
   // =============================================================================
@@ -51,19 +59,21 @@ export function AppHeader() {
             >
               お問い合わせ
             </Link> */}
-
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="rounded-full"
-            >
-              {theme === 'dark' ? (
-                <Sun className="h-5 w-5 transition-all text-white" />
-              ) : (
-                <Moon className="h-5 w-5 transition-all text-gray-950" />
-              )}
-            </Button>
+            
+            {mounted && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="rounded-full"
+              >
+                {theme === 'dark' ? (
+                  <Sun className="h-5 w-5 transition-all text-white" />
+                ) : (
+                  <Moon className="h-5 w-5 transition-all text-gray-950" />
+                )}
+              </Button>
+            )}
           </nav>
         </div>
       </div>
