@@ -109,6 +109,7 @@ export default function BlogPost({ params }: { params: { id: string } }) {
   const excerpt = searchParams.get('excerpt');
   const coverImage = searchParams.get('coverImage');
   const selectedCategories = searchParams.getAll('category'); // ← ✅ これで複数取得
+  const selectedTags = searchParams.getAll('tag'); // ← ✅ これで複数取得
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return '';
@@ -171,9 +172,9 @@ export default function BlogPost({ params }: { params: { id: string } }) {
           </p>
           
           {/* シェアボタン */}
-          {selectedCategories.length > 0 && (
+          {selectedTags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-8">
-              {selectedCategories.map((category) => (
+              {selectedTags.map((category) => (
                 <div
                   key={category}
                   className="text-white flex items-center px-3 py-1 rounded-full text-sm bg-primary/90 text-primary-foreground backdrop-blur-sm"
