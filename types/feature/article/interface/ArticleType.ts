@@ -6,6 +6,7 @@
  * @property date - 記事の公開日（ISO形式）
  * @property readTime - 記事を読むのにかかる時間
  * @property category - 記事のカテゴリー
+ * @property tag - 記事のタグ
  * @property coverImage - 記事のカバー画像URL
  */
 export interface Article {
@@ -15,5 +16,6 @@ export interface Article {
   date?: string;
   readTime?: string;
   category?: string;
+  tag?: string;
   coverImage?: string;
 }

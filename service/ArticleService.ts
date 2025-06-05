@@ -30,6 +30,7 @@ export async function fetchArticlesFromNotion() {
         select: { equals: '公開' },
       },
     }),
+    cache: "no-store"
   });
 
   if (!response.ok) {

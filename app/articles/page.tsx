@@ -137,6 +137,7 @@ const ArticlesPage = () => {
                   title: article.title,
                   date: article.date,
                   category: article.category,
+                  tag: article.tag,
                   readTime: article.readTime,
                   excerpt: article.excerpt,
                   coverImage: article.coverImage

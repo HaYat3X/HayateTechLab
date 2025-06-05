@@ -29,7 +29,8 @@ export const formatNotionArticles = (results: any[]): Article[] =>
       excerpt: properties['記事の説明']?.rich_text?.[0]?.plain_text || '無題',
       date: formattedDate,
       readTime: properties['読むのにかかる時間']?.rich_text?.[0]?.plain_text || '',
-      category: properties['タグ']?.multi_select?.map((tag: any) => tag.name) || [],
+      category: properties['カテゴリー']?.select?.name || '',
+      tag: properties['タグ']?.multi_select?.map((tag: any) => tag.name) || [],
       coverImage,
     };
   });
