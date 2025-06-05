@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Search, Clock, Tag, Calendar, Filter } from 'lucide-react';
-
+import { GetStaticProps } from 'next';
 
 
 // =============================================================================
@@ -17,27 +17,7 @@ import { Search, Clock, Tag, Calendar, Filter } from 'lucide-react';
 import SearchBar from '@/components/feature/article/SearchBar';
 import ArticleFilter from '@/components/feature/article/ArticleFilter';
 import type { ArticleCategory } from '@/types/feature/article/interface/ArticleCategory';
-
-export interface Article {
-  id: string;
-  title: string;
-  excerpt: string;
-  date?: string;
-  readTime?: string;
-  category?: string;
-  coverImage?: string;
-}
-
-
-
-const categories: ArticleCategory[] = [
-  { id: 'all', name: '全て' },
-  { id: 'programming', name: 'プログラミング' },
-  { id: 'design', name: 'デザイン' },
-  { id: 'technology', name: 'テクノロジー' },
-  { id: 'career', name: 'キャリア' },
-];
-
+import type { Article } from '@/types/feature/article/interface/ArticleType';
 
 const ArticlesPage = () => {
   // =============================================================================
@@ -45,6 +25,14 @@ const ArticlesPage = () => {
   // =============================================================================
   const router = useRouter();
   const searchParams = useSearchParams();
+  const categories: ArticleCategory[] = [
+    { id: 'all', name: '全て' },
+    { id: 'programming', name: 'プログラミング' },
+    { id: 'design', name: 'デザイン' },
+    { id: 'technology', name: 'テクノロジー' },
+    { id: 'career', name: 'キャリア' },
+
+  ];
 
   // =============================================================================
   // state
@@ -58,25 +46,22 @@ const ArticlesPage = () => {
   // =============================================================================
   // ライフサイクルフック
   // =============================================================================
-
-  // Notion API から記事取得
+  /**
+   * コンポーネントがマウントされたときに、APIから記事データを取得
+   * 取得したデータは、stateに保存され、記事一覧の表示に使用
+   */
   useEffect(() => {
-    const fetchArticles = async () => {
+    (async () => {
       try {
         const res = await fetch('/api/articles');
         const data = await res.json();
         console.log('✅ 記事取得成功:', data);
-
         setArticles(data.articles || []);
-
       } catch (err) {
         console.error('❌ 記事取得エラー:', err);
       }
-    };
-    fetchArticles();
+    })();
   }, []);
-
-
 
   /**
    * クエリパラメータや検索キーワード、記事データが変更されたときに、
