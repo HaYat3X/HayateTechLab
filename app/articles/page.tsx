@@ -1,9 +1,22 @@
 'use client';
 
+
+// =============================================================================
+// モジュール
+// =============================================================================
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Search, Clock, Tag, Calendar } from 'lucide-react';
+import { Search, Clock, Tag, Calendar, Filter } from 'lucide-react';
+
+
+
+// =============================================================================
+// 自作モジュール
+// =============================================================================
+import SearchBar from '@/components/feature/article/SearchBar';
+import ArticleFilter from '@/components/feature/article/ArticleFilter';
+import type { ArticleCategory } from '@/types/feature/article/interface/ArticleCategory';
 
 export interface Article {
   id: string;
@@ -15,15 +28,36 @@ export interface Article {
   coverImage?: string;
 }
 
+
+
+const categories: ArticleCategory[] = [
+  { id: 'all', name: '全て' },
+  { id: 'programming', name: 'プログラミング' },
+  { id: 'design', name: 'デザイン' },
+  { id: 'technology', name: 'テクノロジー' },
+  { id: 'career', name: 'キャリア' },
+];
+
+
 const ArticlesPage = () => {
+  // =============================================================================
+  // セットアップ
+  // =============================================================================
   const router = useRouter();
   const searchParams = useSearchParams();
-  const initialCategory = searchParams.get('category') || 'all';
 
+  // =============================================================================
+  // state
+  // =============================================================================
+  const initialCategory = searchParams.get('category') || 'all';
   const [articles, setArticles] = useState<Article[]>([]);
   const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchTerm, setSearchTerm] = useState('');
+
+  // =============================================================================
+  // ライフサイクルフック
+  // =============================================================================
 
   // Notion API から記事取得
   useEffect(() => {
@@ -42,19 +76,26 @@ const ArticlesPage = () => {
     fetchArticles();
   }, []);
 
-  // クエリが変わったらカテゴリ変更
-  useEffect(() => {
-    setActiveCategory(searchParams.get('category') || 'all');
-  }, [searchParams]);
 
-  // フィルターと検索
+
+  /**
+   * クエリパラメータや検索キーワード、記事データが変更されたときに、
+   * アクティブなカテゴリを更新し、それに応じた記事リストをフィルターする。
+   */
   useEffect(() => {
+    // クエリパラメータからカテゴリを取得（なければ "all"）
+    const currentCategory = searchParams.get('category') || 'all';
+    setActiveCategory(currentCategory);
+
+    // フィルター処理
     let result = articles;
 
-    if (activeCategory !== 'all') {
-      result = result.filter(article => article.category === activeCategory);
+    // カテゴリフィルター
+    if (currentCategory !== 'all') {
+      result = result.filter(article => article.category === currentCategory);
     }
 
+    // キーワード検索
     if (searchTerm) {
       const lower = searchTerm.toLowerCase();
       result = result.filter(
@@ -65,8 +106,11 @@ const ArticlesPage = () => {
     }
 
     setFilteredArticles(result);
-  }, [articles, activeCategory, searchTerm]);
+  }, [searchParams, articles, searchTerm]);
 
+
+
+  // 共通かつ日付フォーマット関数
   const formatDate = (dateString?: string) => {
     if (!dateString) return '';
     const date = new Date(dateString);
@@ -81,20 +125,19 @@ const ArticlesPage = () => {
     <div className="space-y-8">
       <h1 className="text-3xl font-bold gradient-text">記事一覧</h1>
 
-      {/* 検索バー */}
       <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-grow">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Search size={18} className="text-gray-400" />
-          </div>
-          <input
-            type="text"
-            placeholder="記事を検索..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border rounded-lg dark:bg-gray-700 dark:text-white"
-          />
-        </div>
+        <SearchBar
+          value={searchTerm}
+          onChange={setSearchTerm}
+        />
+        <ArticleFilter
+          categories={categories}
+          value={activeCategory}
+          onChange={(value) => {
+            setActiveCategory(value);
+            router.push(`/articles?category=${value}`);
+          }}
+        />
       </div>
 
       {/* 記事一覧 */}
