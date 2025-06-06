@@ -1,0 +1,17 @@
+.notion {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.notion>div {
+  margin-top: 0 !important;
+}
+
+.notion-property {
+  display: none !important;
+}
+
+.prose blockquote {
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
