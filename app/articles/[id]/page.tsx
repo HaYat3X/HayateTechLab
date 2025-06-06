@@ -13,6 +13,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { NotionRenderer } from 'react-notion-x';
 import dynamic from 'next/dynamic';
+import { useTheme } from 'next-themes';
 const Code = dynamic(() =>
   import('react-notion-x/build/third-party/code').then((m) => m.Code)
 )
@@ -53,6 +54,7 @@ export default function BlogPost({ params }: { params: { id: string } }) {
   const excerpt = searchParams.get('excerpt');
   const coverImage = searchParams.get('coverImage');
   const selectedTags = searchParams.getAll('tag');
+  const { resolvedTheme } = useTheme();
 
   // =============================================================================
   // state
@@ -151,7 +153,7 @@ export default function BlogPost({ params }: { params: { id: string } }) {
             <NotionRenderer
               recordMap={recordMap}
               fullPage={false}
-              darkMode={false}
+              darkMode={resolvedTheme === 'dark'}
               components={{
                 Code,
                 Collection,
