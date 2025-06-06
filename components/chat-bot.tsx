@@ -48,7 +48,7 @@ export function ChatBot() {
       </Button>
 
       {isOpen && (
-        <Card className="fixed bottom-4 right-4 w-[380px] h-[600px] p-4 flex flex-col bg-card/80 backdrop-blur-sm">
+        <Card className="fixed bottom-4 right-4 w-[380px] h-[600px] p-4 flex flex-col bg-card/80 bg-white backdrop-blur-sm dark:bg-gray-900">
           <div className="flex justify-between items-center mb-4">
             <h3 className="font-semibold">チャットボット</h3>
             <Button
@@ -66,16 +66,14 @@ export function ChatBot() {
               {messages.map((message, i) => (
                 <div
                   key={i}
-                  className={`flex ${
-                    message.role === "user" ? "justify-end" : "justify-start"
-                  }`}
+                  className={`flex ${message.role === "user" ? "justify-end" : "justify-start"
+                    }`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-2xl px-4 py-2 ${
-                      message.role === "user"
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted"
-                    }`}
+                    className={`max-w-[80%] rounded-2xl px-4 py-2 ${message.role === "user"
+                        ? "bg-primary text-primary-foreground text-white"
+                        : "bg-muted dark:bg-gray-800"
+                      }`}
                   >
                     {message.content}
                   </div>
@@ -89,10 +87,10 @@ export function ChatBot() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="メッセージを入力..."
-              className="flex-1"
+              className="flex-1 dark:bg-gray-800"
             />
             <Button type="submit" size="icon" className="rounded-full">
-              <Send className="h-4 w-4" />
+              <Send className="h-4 w-4 text-white" />
             </Button>
           </form>
         </Card>
