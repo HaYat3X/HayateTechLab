@@ -7,7 +7,7 @@ import { Inter } from 'next/font/google';
 // =============================================================================
 // 自作モジュール
 // =============================================================================
-import './globals.css';
+import '../public/css/globals.css';
 import { ThemeProvider } from '@/components/common/ThemeProvider';
 import { AppHeader } from '@/components/common/AppHeader';
 import { AppFooter } from '@/components/common/AppFooter';
