@@ -40,25 +40,18 @@ export function AppHeader() {
 
           <nav className="flex items-center space-x-6">
             <Link
-              href="/"
+              href="/c"
               className="text-sm font-medium hover:text-primary transition-colors"
             >
-              トップ
+              記事一覧
             </Link>
 
             <Link
-              href="/articles"
+              href="/about-me"
               className="text-sm font-medium hover:text-primary transition-colors"
             >
-              記事
+              私について
             </Link>
-
-            {/* <Link
-              href="/contact"
-              className="text-sm font-medium hover:text-primary transition-colors"
-            >
-              お問い合わせ
-            </Link> */}
             
             {mounted && (
               <Button
