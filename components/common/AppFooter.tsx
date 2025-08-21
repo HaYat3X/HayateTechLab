@@ -32,7 +32,7 @@ export function AppFooter() {
 
           <div>
             <h2 className="mb-4 text-sm font-semibold uppercase text-gray-900 dark:text-white">
-              リンク
+              ページリンク
             </h2>
 
             <ul className="text-gray-600 dark:text-gray-400 text-sm">

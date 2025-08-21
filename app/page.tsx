@@ -5,23 +5,22 @@
 // =============================================================================
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
-import { RefreshCw } from 'lucide-react';
 
 // =============================================================================
 // 自作モジュール
 // =============================================================================
-import SearchBar from '@/components/feature/article/SearchBar';
-import ArticleFilter from '@/components/feature/article/ArticleFilter';
+import SearchBar from '@/components/feature/blog/SearchBar';
+import ArticleFilter from '@/components/feature/blog/ArticleFilter';
 import type { ArticleCategory } from '@/types/feature/article/interface/ArticleCategory';
 import type { Article } from '@/types/feature/article/interface/ArticleType';
-import ArticleCard from '@/components/feature/article/ArticleCard';
+import ArticleCard from '@/components/feature/blog/ArticleCard';
+import SideMenu, { SortKey } from '@/components/feature/blog/SideMenu';
 
 const ArticlesPage = () => {
   // =============================================================================
   // セットアップ
   // =============================================================================
+  const [sort, setSort] = useState<SortKey>("new"); 
   const router = useRouter();
   const searchParams = useSearchParams();
   const categories: ArticleCategory[] = [
@@ -153,68 +152,15 @@ const ArticlesPage = () => {
           </div>
         </main>
 
-        {/* 今後共通化 */}
-        {/* ソート機能いるのでは　閲覧数、新しい、古い */}
-        {/* カテゴリー検索 */}
-        {/*  */}
-        <aside>
-          <div className="sticky top-24 space-y-4 rounded-2xl p-4 shadow-sm">
-            <h3 className="font-semibold text-base">キーワードで検索</h3>
-            <SearchBar value={searchTerm} onChange={setSearchTerm} />
-
-            <h3 className="font-semibold text-base pt-8">カテゴリーで検索</h3>
-            <p>
-              フロントエンド
-            </p>
-
-            <p>
-              バックエンド
-            </p>
-
-            <p>
-              自動化・連携
-            </p>
-
-            <p>
-              アーキテクチャ・設計
-            </p>
-
-            <p>
-              開発ツール・環境
-            </p>
-
-            <p>
-              ドキュメント・構成管理
-            </p>
-
-            <p>
-              働き方・キャリア
-            </p>
-
-            <p>
-              プロジェクト管理
-            </p>
-
-            <p>
-              組織・チーム運営
-            </p>
-
-            <p>
-              マーケ・戦略
-            </p>
-
-            <h3 className="font-semibold text-base pt-8">記事を並び替える</h3>
-            <p>
-              新しい順
-            </p>
-            <p>
-              古い順
-            </p>
-            <p>
-              閲覧数が多い順
-            </p>
-          </div>
-        </aside>
+        <SideMenu
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          categories={categories}
+          activeCategory={activeCategory}
+          onCategoryChange={setActiveCategory}
+          sort={sort}
+          onSortChange={setSort}
+        />
       </div>
     </div>
   );

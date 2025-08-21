@@ -40,7 +40,7 @@ export function AppHeader() {
 
           <nav className="flex items-center space-x-6">
             <Link
-              href="/c"
+              href="/"
               className="text-sm font-medium hover:text-primary transition-colors"
             >
               記事一覧

@@ -9,11 +9,12 @@ import { useSearchParams, useRouter } from 'next/navigation';
 // =============================================================================
 // 自作モジュール
 // =============================================================================
-import SearchBar from '@/components/feature/article/SearchBar';
-import ArticleFilter from '@/components/feature/article/ArticleFilter';
+import SearchBar from '@/components/feature/blog/SearchBar';
+import ArticleFilter from '@/components/feature/blog/ArticleFilter';
 import type { ArticleCategory } from '@/types/feature/article/interface/ArticleCategory';
 import type { Article } from '@/types/feature/article/interface/ArticleType';
-import ArticleCard from '@/components/feature/article/ArticleCard';
+import ArticleCard from '@/components/feature/blog/ArticleCard';
+import SideMenu, { SortKey } from '@/components/feature/blog/SideMenu';
 
 // 文字列正規化（全角/半角の揺れや大文字小文字を吸収）
 const normalize = (s: string) => s.normalize('NFKC').toLowerCase().trim();
@@ -22,6 +23,7 @@ const ArticlesPage = () => {
   // =============================================================================
   // セットアップ
   // =============================================================================
+  const [sort, setSort] = useState<SortKey>("new");
   const router = useRouter();
   const searchParams = useSearchParams();
   const categories: ArticleCategory[] = [
@@ -111,45 +113,48 @@ const ArticlesPage = () => {
   // =============================================================================
   return (
     <div className="space-y-8">
-      <h1 className="text-3xl font-bold gradient-text">検索結果</h1>
+      <div className="grid grid-cols-[minmax(0,1fr)_280px] gap-6">
+        <main >
+          <h1 className="text-3xl font-bold gradient-text mb-5">検索結果</h1>
 
-      <div className="flex flex-col sm:flex-row gap-4">
-        <SearchBar value={searchTerm} onChange={setSearchTerm} />
-        <ArticleFilter
+          {filteredArticles.length > 0 ? (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filteredArticles.map((article) => (
+                <ArticleCard
+                  key={(article as any).id ?? (article as any).slug ?? article.title}
+                  article={article}
+                />
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-600 dark:text-gray-400 text-lg">
+                条件に一致する記事が見つかりませんでした。
+              </p>
+              <button
+                onClick={() => {
+                  setActiveCategory('all');
+                  setSearchTerm('');
+                  router.replace('/blog/search');
+                }}
+                className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+              >
+                フィルターをリセット
+              </button>
+            </div>
+          )}
+        </main>
+
+        <SideMenu
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
           categories={categories}
-          value={activeCategory}
-          onChange={(value) => {
-            setActiveCategory(value);
-          }}
+          activeCategory={activeCategory}
+          onCategoryChange={setActiveCategory}
+          sort={sort}
+          onSortChange={setSort}
         />
       </div>
-
-      {filteredArticles.length > 0 ? (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredArticles.map((article) => (
-            <ArticleCard
-              key={(article as any).id ?? (article as any).slug ?? article.title}
-              article={article}
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="text-center py-12">
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            条件に一致する記事が見つかりませんでした。
-          </p>
-          <button
-            onClick={() => {
-              setActiveCategory('all');
-              setSearchTerm('');
-              router.replace('/blog/search');
-            }}
-            className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
-          >
-            フィルターをリセット
-          </button>
-        </div>
-      )}
     </div>
   );
 };

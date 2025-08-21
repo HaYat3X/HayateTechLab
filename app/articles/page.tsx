@@ -9,11 +9,11 @@ import { useSearchParams, useRouter } from 'next/navigation';
 // =============================================================================
 // 自作モジュール
 // =============================================================================
-import SearchBar from '@/components/feature/article/SearchBar';
-import ArticleFilter from '@/components/feature/article/ArticleFilter';
+import SearchBar from '@/components/feature/blog/SearchBar';
+import ArticleFilter from '@/components/feature/blog/ArticleFilter';
 import type { ArticleCategory } from '@/types/feature/article/interface/ArticleCategory';
 import type { Article } from '@/types/feature/article/interface/ArticleType';
-import ArticleCard from '@/components/feature/article/ArticleCard';
+import ArticleCard from '@/components/feature/blog/ArticleCard';
 
 const ArticlesPage = () => {
   // =============================================================================
