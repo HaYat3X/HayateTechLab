@@ -115,7 +115,7 @@ const ArticleSearchSidebar: React.FC<ArticleSearchSidebarProps> = ({
         </div>
 
         {/* 並び替え */}
-        <h3 className="font-semibold text-base pt-8">記事を並び替える</h3>
+        {/* <h3 className="font-semibold text-base pt-8">記事を並び替える</h3>
         <div className="space-y-2 text-gray-400">
           <label
             className={`flex items-center gap-2 cursor-pointer px-3 ${sort === "new" ? "text-foreground" : ""
@@ -158,7 +158,7 @@ const ArticleSearchSidebar: React.FC<ArticleSearchSidebarProps> = ({
             />
             閲覧数が多い順
           </label>
-        </div>
+        </div> */}
       </div>
     </aside>
   );
