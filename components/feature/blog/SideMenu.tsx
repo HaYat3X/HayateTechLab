@@ -105,7 +105,7 @@ const ArticleSearchSidebar: React.FC<ArticleSearchSidebarProps> = ({
                 "text-left px-3 py-1 hover:bg-muted/60",
                 activeCategory === c.id
                   ? "font-medium"
-                  : "text-muted-foreground",
+                  : "text-gray-400",
               ].join(" ")}
               aria-pressed={activeCategory === c.id}
             >

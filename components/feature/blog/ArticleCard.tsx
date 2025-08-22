@@ -19,7 +19,7 @@ const ArticleCard = ({ article }: ArticleCardProps) => {
   return (
     <Link
       href={{
-        pathname: `/articles/${article.id}`,
+        pathname: `/blog/${article.id}`,
         query: {
           title: article.title,
           date: article.date,

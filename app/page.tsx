@@ -20,7 +20,7 @@ const ArticlesPage = () => {
   // =============================================================================
   // セットアップ
   // =============================================================================
-  const [sort, setSort] = useState<SortKey>("new"); 
+  const [sort, setSort] = useState<SortKey>("new");
   const router = useRouter();
   const searchParams = useSearchParams();
   const categories: ArticleCategory[] = [
@@ -95,11 +95,6 @@ const ArticlesPage = () => {
 
     setFilteredArticles(result);
   }, [searchParams, articles, searchTerm]);
-
-  const clearFilters = () => {
-    setActiveCategory('all');
-    setSearchTerm('');
-  };
 
   // =============================================================================
   // テンプレート

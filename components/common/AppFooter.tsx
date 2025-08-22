@@ -1,7 +1,7 @@
 // =============================================================================
 // モジュール
 // =============================================================================
-import { Github, Twitter } from 'lucide-react';
+import { Github, Twitter, BookOpen } from 'lucide-react';
 import Link from 'next/link';
 
 export function AppFooter() {
@@ -38,13 +38,13 @@ export function AppFooter() {
             <ul className="text-gray-600 dark:text-gray-400 text-sm">
               <li className="mb-2">
                 <Link href="/" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                  トップ
+                  記事一覧
                 </Link>
               </li>
 
               <li className="mb-2">
-                <Link href="/articles" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
-                  記事
+                <Link href="/about-me" className="hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors">
+                  私について
                 </Link>
               </li>
             </ul>
@@ -60,7 +60,7 @@ export function AppFooter() {
 
           <div className="flex mt-4 space-x-4 sm:mt-0">
             <Link
-              href="https://github.com/HaYat3X"
+              href="https://github.com/HaYat3X" target="_blank"
               className="text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
               aria-label="Github"
             >
@@ -68,11 +68,19 @@ export function AppFooter() {
             </Link>
 
             <Link
-              href="https://twitter.com/HaYat3X"
+              href="https://twitter.com/HaYat3X" target="_blank"
               className="text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
-              aria-label="Twitter"
+              aria-label="X"
             >
               <Twitter size={20} />
+            </Link>
+
+            <Link
+              href="https://wobbly-megaraptor-f23.notion.site/253fab19d29580578efad0a41ad447c9" target="_blank"
+              className="text-gray-500 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+              aria-label="Notion"
+            >
+              <BookOpen size={20} />
             </Link>
           </div>
         </div>
