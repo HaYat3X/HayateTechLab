@@ -135,7 +135,7 @@ const ArticlesPage = () => {
 
           <h1 className="text-3xl font-bold gradient-text mt-10 pt-5 mb-5">最新の記事</h1>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {filteredArticles.slice(0, 19).map((article, index) => (
+            {filteredArticles.slice(0, 10).map((article, index) => (
               index === 0 ? (
                 <div className="col-span-full bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow group">
                   <ArticleCard key={(article as any).id ?? (article as any).slug ?? article.title} article={article} />

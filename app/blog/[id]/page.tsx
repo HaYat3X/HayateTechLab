@@ -106,7 +106,7 @@ export default function BlogPost({ params }: { params: { id: string } }) {
       <div className="grid grid-cols-[minmax(0,1fr)_280px] gap-6">
         <main >
           <Link
-            href="/articles"
+            href="/"
             className="inline-flex items-center text-indigo-600 dark:text-indigo-400 hover:underline mb-4"
           >
             <ChevronLeft size={16} className="mr-1" /> 記事一覧に戻る
@@ -211,7 +211,7 @@ export default function BlogPost({ params }: { params: { id: string } }) {
               </p>
 
               {/* Links */}
-              <ul className="space-y-2 pt-1 text-sm">
+              <ul className="space-y-2 pt-2 text-sm">
                 <li>
                   <a href="https://github.com/HaYat3X" target="_blank" rel="noopener noreferrer"
                     className="group inline-flex items-center gap-2 text-gray-900 dark:text-gray-100 hover:opacity-90">
@@ -238,7 +238,6 @@ export default function BlogPost({ params }: { params: { id: string } }) {
                 </li>
               </ul>
             </div>
-
           </div>
         </aside>
       </div>

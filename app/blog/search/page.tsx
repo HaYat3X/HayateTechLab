@@ -13,6 +13,7 @@ import type { ArticleCategory } from '@/types/feature/article/interface/ArticleC
 import type { Article } from '@/types/feature/article/interface/ArticleType';
 import ArticleCard from '@/components/feature/blog/ArticleCard';
 import SideMenu, { SortKey } from '@/components/feature/blog/SideMenu';
+import Pagination from '@/components/feature/blog/Pagination';
 
 // 文字列正規化（全角/半角の揺れや大文字小文字を吸収）
 const normalize = (s: string) => s.normalize('NFKC').toLowerCase().trim();
@@ -43,18 +44,30 @@ const ArticlesPage = () => {
   // =============================================================================
   const initialCategory = searchParams.get('category') || 'all';
   const initialQuery = searchParams.get('q') || '';
-
   const [articles, setArticles] = useState<Article[]>([]);
   const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchTerm, setSearchTerm] = useState(initialQuery);
+
+  // 例: 1ページ12件
+  const PER_PAGE = 12;
+  const totalPages = Math.max(1, Math.ceil(filteredArticles.length / PER_PAGE));
+  const currentPage = Math.min(
+    Math.max(1, parseInt(searchParams.get("page") || "1", 10) || 1),
+    totalPages
+  );
+  const start = (currentPage - 1) * PER_PAGE;
+  const pageItems = filteredArticles.slice(start, start + PER_PAGE);
+
 
   // 検索語のURL同期（軽いデバウンス: 300ms）
   useEffect(() => {
     const t = setTimeout(() => {
       const params = new URLSearchParams(searchParams.toString());
       if (searchTerm) params.set('q', searchTerm); else params.delete('q');
-      if (activeCategory && activeCategory !== 'all') params.set('category', activeCategory); else params.delete('category');
+      if (activeCategory && activeCategory !== 'all') params.set('category', activeCategory); else
+        params.delete('page');
+      params.delete('category');
       const qs = params.toString();
       router.replace(qs ? `/blog/search?${qs}` : '/blog/search');
     }, 300);
@@ -115,9 +128,9 @@ const ArticlesPage = () => {
         <main >
           <h1 className="text-3xl font-bold gradient-text mb-5">検索結果</h1>
 
-          {filteredArticles.length > 0 ? (
+          {pageItems.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredArticles.map((article) => (
+              {pageItems.map((article) => (
                 <ArticleCard
                   key={(article as any).id ?? (article as any).slug ?? article.title}
                   article={article}
@@ -126,7 +139,7 @@ const ArticlesPage = () => {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-gray-600 dark:text-gray-400 text-lg">
+              <p className="text-gray-600 dark:text-gray-400 text-lg pt-10">
                 条件に一致する記事が見つかりませんでした。
               </p>
               <button
@@ -135,12 +148,24 @@ const ArticlesPage = () => {
                   setSearchTerm('');
                   router.replace('/blog/search');
                 }}
-                className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                className="mt-4 px-6 py-3 bg-indigo-600 text-white text-sm font-medium rounded-lg shadow hover:bg-indigo-700 transition-colors"
               >
                 フィルターをリセット
               </button>
             </div>
           )}
+
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            basePath="/blog/search"
+            query={{
+              q: searchTerm,
+              category: activeCategory,
+              sort: sort, // 'new' | 'old' （'new'は自動で省略）
+            }}
+            className="mt-10"
+          />
         </main>
 
         <SideMenu
