@@ -15,12 +15,12 @@ export default function NavigationSection() {
         <h2 className="text-3xl font-bold text-white mb-6">最新の記事をチェックしよう</h2>
 
         <p className="mb-8 text-white/90 max-w-2xl mx-auto">
-          プログラミング、ビジネスに関する実践的な記事が揃っています。<br />
+          フロントエンドやバックエンド、AI、ビジネスなど、幅広い分野で実践的な情報を発信しています。<br />
           一緒に技術を探求しましょう！
         </p>
 
         <Link
-          href="/articles"
+          href="/"
           className="inline-flex items-center px-8 py-4 bg-white text-indigo-600 font-medium rounded-full hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 hover:shadow-lg animate-float"
         >
           記事を読む <ArrowRight size={20} className="ml-2" />

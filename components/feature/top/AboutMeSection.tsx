@@ -42,7 +42,7 @@ export default function AboutMeSection() {
               </p>
               
               <div className="flex flex-wrap gap-3">
-                {['フロントエンド開発', 'バックエンド開発', 'UI/UXデザイン'].map((skill, index) => (
+                {['フロントエンド開発', 'バックエンド開発', '要件定義・設計'].map((skill, index) => (
                   <span
                     key={index}
                     className="px-4 py-2 bg-gradient-to-br from-indigo-100 to-purple-100 dark:from-indigo-900 dark:to-purple-900 rounded-full text-sm font-medium text-gray-800 dark:text-gray-200"
