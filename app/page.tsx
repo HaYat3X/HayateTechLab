@@ -82,20 +82,27 @@ const ArticlesPage = () => {
   }, []);
 
   /**
-   * クエリパラメータや検索キーワード、記事データが変更されたときに、
-   * アクティブなカテゴリを更新し、それに応じた記事リストをフィルターする。
+   * クエリパラメータからカテゴリを取得してactiveCategoryを更新
    */
   useEffect(() => {
-    // クエリパラメータからカテゴリを取得（なければ "all"）
     const currentCategory = searchParams.get('category') || 'all';
     setActiveCategory(currentCategory);
+  }, [searchParams]);
 
+  /**
+   * 記事データ、アクティブカテゴリ、検索キーワードが変更されたときに記事をフィルター
+   */
+  useEffect(() => {
     // フィルター処理
     let result = articles;
 
-    // カテゴリフィルター
-    if (currentCategory !== 'all') {
-      result = result.filter(article => article.category === currentCategory);
+    // カテゴリフィルター（文字列/配列どちらにも対応）
+    if (activeCategory !== 'all') {
+      result = result.filter((article) => {
+        const category = (article as any).category;
+        if (Array.isArray(category)) return category.includes(activeCategory);
+        return category === activeCategory;
+      });
     }
 
     // キーワード検索
@@ -109,7 +116,7 @@ const ArticlesPage = () => {
     }
 
     setFilteredArticles(result);
-  }, [searchParams, articles, searchTerm]);
+  }, [articles, activeCategory, searchTerm]);
 
   // =============================================================================
   // テンプレート
@@ -137,28 +144,34 @@ const ArticlesPage = () => {
         <main >
           <h1 className="text-3xl font-bold gradient-text mb-5">話題の記事</h1>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {trendingArticles.map((article, index) => (
-              index === 0 ? (
-                <div key={(article as any).id ?? (article as any).slug ?? article.title} className="col-span-full rounded-xl shadow-md hover:shadow-lg transition-shadow group">
+            {trendingArticles.map((article, index) => {
+              const key = (article as any).id || `${(article as any).title || 'article'}-${index}`;
+              return index === 0 ? (
+                <div key={key} className="col-span-full rounded-xl shadow-md hover:shadow-lg transition-shadow group">
                   <ArticleCard article={article} />
                 </div>
               ) : (
-                <ArticleCard key={(article as any).id ?? (article as any).slug ?? article.title} article={article} />
-              )
-            ))}
+                <div key={key}>
+                  <ArticleCard article={article} />
+                </div>
+              );
+            })}
           </div>
 
           <h1 className="text-3xl font-bold gradient-text mt-10 pt-5 mb-5">最新の記事</h1>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {filteredArticles.slice(0, 10).map((article, index) => (
-              index === 0 ? (
-                <div className="col-span-full bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow group">
-                  <ArticleCard key={(article as any).id ?? (article as any).slug ?? article.title} article={article} />
+            {filteredArticles.slice(0, 10).map((article, index) => {
+              const key = (article as any).id || `${(article as any).title || 'article'}-${index}`;
+              return index === 0 ? (
+                <div key={key} className="col-span-full bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow group">
+                  <ArticleCard article={article} />
                 </div>
               ) : (
-                <ArticleCard key={(article as any).id ?? (article as any).slug ?? article.title} article={article} />
-              )
-            ))}
+                <div key={key}>
+                  <ArticleCard article={article} />
+                </div>
+              );
+            })}
           </div>
         </main>
 

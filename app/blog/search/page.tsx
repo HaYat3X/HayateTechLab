@@ -4,7 +4,7 @@
 // モジュール
 // =============================================================================
 import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 
 // =============================================================================
 // 自作モジュール
@@ -25,6 +25,7 @@ const ArticlesPage = () => {
   const [sort, setSort] = useState<SortKey>("new");
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const categories: ArticleCategory[] = [
     { id: 'all', name: '全て' },
     { id: 'フロントエンド', name: 'フロントエンド' },
@@ -59,20 +60,39 @@ const ArticlesPage = () => {
   const start = (currentPage - 1) * PER_PAGE;
   const pageItems = filteredArticles.slice(start, start + PER_PAGE);
 
-
-  // 検索語のURL同期（軽いデバウンス: 300ms）
+  // // 検索語のURL同期（軽いデバウンス: 300ms）
+  // useEffect(() => {
+  //   const t = setTimeout(() => {
+  //     const params = new URLSearchParams(searchParams.toString());
+  //     if (searchTerm) params.set('q', searchTerm); else params.delete('q');
+  //     if (activeCategory && activeCategory !== 'all') params.set('category', activeCategory); else
+  //       params.delete('page');
+  //     params.delete('category');
+  //     const qs = params.toString();
+  //     router.replace(qs ? `/blog/search?${qs}` : '/blog/search');
+  //   }, 300);
+  //   return () => clearTimeout(t);
+  // }, [searchTerm, activeCategory, router]);
   useEffect(() => {
     const t = setTimeout(() => {
-      const params = new URLSearchParams(searchParams.toString());
-      if (searchTerm) params.set('q', searchTerm); else params.delete('q');
-      if (activeCategory && activeCategory !== 'all') params.set('category', activeCategory); else
-        params.delete('page');
-      params.delete('category');
-      const qs = params.toString();
-      router.replace(qs ? `/blog/search?${qs}` : '/blog/search');
+      // 状態からクエリを組み立て直す
+      const next = new URLSearchParams();
+      if (searchTerm) next.set('q', searchTerm);
+      if (activeCategory && activeCategory !== 'all') next.set('category', activeCategory);
+      if (sort && sort !== 'new') next.set('sort', sort);
+
+      // フィルタが変わったので page はリセット（=付けない）
+      // ※ Pagination でページ遷移するときだけ page を付ける想定
+
+      const nextQs = next.toString();
+      const currentQs = searchParams.toString();
+      if (nextQs !== currentQs) {
+        router.replace(nextQs ? `${pathname}?${nextQs}` : pathname, { scroll: false });
+      }
     }, 300);
     return () => clearTimeout(t);
-  }, [searchTerm, activeCategory, router]);
+    // sort も依存に入れる
+  }, [searchTerm, activeCategory, sort, pathname, router, searchParams]);
 
   // =============================================================================
   // ライフサイクルフック
