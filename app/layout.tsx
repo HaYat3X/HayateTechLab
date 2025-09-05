@@ -24,6 +24,9 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'HayateTechLab',
   description: 'HayateTechLabは、エンジニアのHayate Takedaが日々の技術調査や学びをまとめた個人ブログです。',
+  verification: {
+    google: "p-kJaxyGWUgRBZ98DZ7uHzRjnawEhzYkLCpjqu2ZS8Y",
+  },
 };
 
 export default function RootLayout({
