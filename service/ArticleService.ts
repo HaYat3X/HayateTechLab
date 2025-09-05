@@ -8,7 +8,7 @@ import { formatNotionArticles } from "@/utils/feature/article/formatNotionArticl
  * Notion APIから「公開」状態のページを取得し、整形された記事データとして返す
  */
 export async function fetchArticlesFromNotion() {
-  const NOTION_API_KEY = process.env.NOTION_API_KEY || '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';
+  const NOTION_API_KEY = process.env.NOTION_API_KEY || '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';
   const DATABASE_ID = process.env.NOTION_DATABASE_ID || '1d4fab19d29580a2bc13d8f559d5fa7a';
 
   // 認証情報チェック

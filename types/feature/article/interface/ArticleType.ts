@@ -8,6 +8,7 @@
  * @property category - 記事のカテゴリー
  * @property tag - 記事のタグ
  * @property coverImage - 記事のカバー画像URL
+ * @property viewCount - 記事の表示回数
  */
 export interface Article {
   id: string;
@@ -18,4 +19,5 @@ export interface Article {
   category?: string;
   tag?: string;
   coverImage?: string;
+  viewCount?: number;
 }

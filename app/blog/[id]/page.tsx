@@ -8,7 +8,7 @@ import 'prismjs/themes/prism-tomorrow.css'
 import 'katex/dist/katex.min.css'
 import Image from 'next/image';
 import author from '../../../public/img/Hayate.jpg';
-import { Clock, Tag, Calendar, ChevronLeft } from 'lucide-react';
+import { Clock, Tag, Calendar, ChevronLeft, Eye } from 'lucide-react';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { notFound } from 'next/navigation';
@@ -64,6 +64,7 @@ export default function BlogPost({ params }: { params: { id: string } }) {
   // =============================================================================
   const [recordMap, setRecordMap] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const [viewCount, setViewCount] = useState<number>(0);
 
   // =============================================================================
   // ライフサイクルフック
@@ -87,6 +88,23 @@ export default function BlogPost({ params }: { params: { id: string } }) {
     };
 
     fetchPost();
+  }, [params.id]);
+
+  // 表示数をインクリメント
+  useEffect(() => {
+    const incrementView = async () => {
+      try {
+        const res = await fetch(`/api/articles/${params.id}/view`, {
+          method: 'POST',
+        });
+        const data = await res.json();
+        setViewCount(data.viewCount);
+      } catch (error) {
+        console.error('表示数インクリメントエラー:', error);
+      }
+    };
+
+    incrementView();
   }, [params.id]);
 
   // =============================================================================  
@@ -129,6 +147,11 @@ export default function BlogPost({ params }: { params: { id: string } }) {
                 <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
                   <Clock size={14} className="mr-1" />
                   {readTime} 分で読める
+                </div>
+
+                <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm">
+                  <Eye size={14} className="mr-1" />
+                  {viewCount} 回表示
                 </div>
               </div>
 

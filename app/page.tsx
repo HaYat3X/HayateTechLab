@@ -43,6 +43,7 @@ const ArticlesPage = () => {
   const initialCategory = searchParams.get('category') || 'all';
   const [articles, setArticles] = useState<Article[]>([]);
   const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
+  const [trendingArticles, setTrendingArticles] = useState<Article[]>([]);
   const [activeCategory, setActiveCategory] = useState(initialCategory);
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -62,6 +63,20 @@ const ArticlesPage = () => {
         setArticles(data.articles || []);
       } catch (err) {
         console.error('❌ 記事取得エラー:', err);
+      }
+    })();
+  }, []);
+
+  // 話題の記事を取得
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch('/api/articles/trending?limit=4');
+        const data = await res.json();
+        console.log('✅ 話題の記事取得成功:', data);
+        setTrendingArticles(data.articles || []);
+      } catch (err) {
+        console.error('❌ 話題の記事取得エラー:', err);
       }
     })();
   }, []);
@@ -122,7 +137,7 @@ const ArticlesPage = () => {
         <main >
           <h1 className="text-3xl font-bold gradient-text mb-5">話題の記事</h1>
           <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {filteredArticles.slice(0, 4).map((article, index) => (
+            {trendingArticles.map((article, index) => (
               index === 0 ? (
                 <div key={(article as any).id ?? (article as any).slug ?? article.title} className="col-span-full rounded-xl shadow-md hover:shadow-lg transition-shadow group">
                   <ArticleCard article={article} />
