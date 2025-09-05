@@ -60,19 +60,6 @@ const ArticlesPage = () => {
   const start = (currentPage - 1) * PER_PAGE;
   const pageItems = filteredArticles.slice(start, start + PER_PAGE);
 
-  // // 検索語のURL同期（軽いデバウンス: 300ms）
-  // useEffect(() => {
-  //   const t = setTimeout(() => {
-  //     const params = new URLSearchParams(searchParams.toString());
-  //     if (searchTerm) params.set('q', searchTerm); else params.delete('q');
-  //     if (activeCategory && activeCategory !== 'all') params.set('category', activeCategory); else
-  //       params.delete('page');
-  //     params.delete('category');
-  //     const qs = params.toString();
-  //     router.replace(qs ? `/blog/search?${qs}` : '/blog/search');
-  //   }, 300);
-  //   return () => clearTimeout(t);
-  // }, [searchTerm, activeCategory, router]);
   useEffect(() => {
     const t = setTimeout(() => {
       // 状態からクエリを組み立て直す

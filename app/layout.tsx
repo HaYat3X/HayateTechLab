@@ -23,7 +23,7 @@ const inter = Inter({ subsets: ['latin'] });
 // メタデータ設定
 export const metadata: Metadata = {
   title: 'HayateTechLab',
-  description: '個人エンジニアによる技術検証と知見の記録を目的とした開発ラボ',
+  description: 'HayateTechLabは、エンジニアのHayate Takedaが日々の技術調査や学びをまとめた個人ブログです。',
 };
 
 export default function RootLayout({
