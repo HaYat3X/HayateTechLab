@@ -32,5 +32,6 @@ export const formatNotionArticles = (results: any[]): Article[] =>
       category: properties['カテゴリー']?.select?.name || '',
       tag: properties['タグ']?.multi_select?.map((tag: any) => tag.name) || [],
       coverImage,
+      viewCount: typeof properties['閲覧数']?.number === 'number' ? properties['閲覧数'].number : 0,
     };
   });

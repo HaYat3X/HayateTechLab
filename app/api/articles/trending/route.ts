@@ -7,7 +7,6 @@ import { NextRequest, NextResponse } from 'next/server';
 // 自作モジュール
 // =============================================================================
 import { fetchArticlesFromNotion } from '@/service/ArticleService';
-import { getAllViewCounts } from '@/service/ViewCountService';
 import type { Article } from '@/types/feature/article/interface/ArticleType';
 
 // =============================================================================
@@ -18,20 +17,11 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const limit = parseInt(searchParams.get('limit') || '10');
     
-    // 全ての記事を取得
+    // 全ての記事を取得（Notionの`閲覧数`を含む）
     const articles = await fetchArticlesFromNotion();
-    
-    // 表示数データを取得
-    const viewCounts = await getAllViewCounts();
-    
-    // 記事に表示数を追加
-    const articlesWithViewCount: Article[] = articles.map(article => ({
-      ...article,
-      viewCount: viewCounts[article.id] || 0
-    }));
-    
+
     // 表示数でソート（降順）
-    const trendingArticles = articlesWithViewCount
+    const trendingArticles = (articles as Article[])
       .sort((a, b) => (b.viewCount || 0) - (a.viewCount || 0))
       .slice(0, limit);
     

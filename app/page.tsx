@@ -151,7 +151,7 @@ const ArticlesPage = () => {
                   <ArticleCard article={article} />
                 </div>
               ) : (
-                <div key={key}>
+                <div key={key} className="rounded-xl shadow-md hover:shadow-lg transition-shadow">
                   <ArticleCard article={article} />
                 </div>
               );
@@ -167,7 +167,7 @@ const ArticlesPage = () => {
                   <ArticleCard article={article} />
                 </div>
               ) : (
-                <div key={key}>
+                <div key={key} className="rounded-xl shadow-md hover:shadow-lg transition-shadow">
                   <ArticleCard article={article} />
                 </div>
               );
